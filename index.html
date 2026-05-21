@@ -2,6 +2,9 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
+  <meta http-equiv="cache-control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="pragma" content="no-cache">
+  <meta http-equiv="expires" content="0">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Copy Text Parameter</title>
   <style>
@@ -58,11 +61,6 @@
       margin: 1rem 0 0;
       text-align: center;
     }
-
-    #fallback {
-      margin-top: 1rem;
-      min-height: 4rem;
-    }
   </style>
 </head>
 <body>
@@ -70,8 +68,7 @@
     <label for="source">Text Parameter</label>
     <textarea id="source" autocomplete="off" spellcheck="false"></textarea>
     <button id="copy" type="button">Copy Text</button>
-    <p id="status" role="status" aria-live="polite">Loading will try to copy; click the button if the browser blocks it.</p>
-    <textarea id="fallback" readonly hidden></textarea>
+    <p id="status" role="status" aria-live="polite">Click the button to copy the text parameter.</p>
   </main>
 
   <script>
@@ -80,34 +77,27 @@
     const source = document.getElementById("source");
     const button = document.getElementById("copy");
     const status = document.getElementById("status");
-    const fallback = document.getElementById("fallback");
 
     function getInitialText() {
       const params = new URLSearchParams(window.location.search);
       return params.get(parameterName) ?? defaultText;
     }
 
-    async function copyText(event) {
+    async function copyText() {
       const copyValue = source.value;
 
       try {
         await navigator.clipboard.writeText(copyValue);
-        status.textContent = event ? "Copied text." : "Copied text on load.";
-        fallback.hidden = true;
+        status.textContent = "Copied text.";
       } catch (error) {
-        fallback.hidden = false;
-        fallback.value = copyValue;
-        fallback.focus();
-        fallback.select();
-        status.textContent = event
-          ? "Clipboard access was blocked. The text is selected below."
-          : "Clipboard copy on load was blocked. Click the button to copy the text.";
+        source.focus();
+        source.select();
+        status.textContent = "Clipboard access was blocked. The text is selected above.";
       }
     }
 
     source.value = getInitialText();
     button.addEventListener("click", copyText);
-    window.addEventListener("DOMContentLoaded", () => copyText());
   </script>
 </body>
 </html>
