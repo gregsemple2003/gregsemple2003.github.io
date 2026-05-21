@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Copy GET Parameter</title>
+  <title>Copy Text Parameter</title>
   <style>
     :root {
       color-scheme: light dark;
@@ -67,9 +67,9 @@
 </head>
 <body>
   <main>
-    <label for="source">String</label>
+    <label for="source">Text Parameter</label>
     <textarea id="source" autocomplete="off" spellcheck="false"></textarea>
-    <button id="copy" type="button">Copy URL</button>
+    <button id="copy" type="button">Copy Text</button>
     <p id="status" role="status" aria-live="polite">Loading will try to copy; click the button if the browser blocks it.</p>
     <textarea id="fallback" readonly hidden></textarea>
   </main>
@@ -87,17 +87,12 @@
       return params.get(parameterName) ?? defaultText;
     }
 
-    function buildCopyValue() {
-      const encoded = encodeURIComponent(source.value);
-      return `${window.location.origin}${window.location.pathname}?${parameterName}=${encoded}`;
-    }
-
     async function copyText(event) {
-      const copyValue = buildCopyValue();
+      const copyValue = source.value;
 
       try {
         await navigator.clipboard.writeText(copyValue);
-        status.textContent = event ? "Copied URL." : "Copied URL on load.";
+        status.textContent = event ? "Copied text." : "Copied text on load.";
         fallback.hidden = true;
       } catch (error) {
         fallback.hidden = false;
@@ -105,8 +100,8 @@
         fallback.focus();
         fallback.select();
         status.textContent = event
-          ? "Clipboard access was blocked. The URL is selected below."
-          : "Clipboard copy on load was blocked. Click the button to copy the URL.";
+          ? "Clipboard access was blocked. The text is selected below."
+          : "Clipboard copy on load was blocked. Click the button to copy the text.";
       }
     }
 
