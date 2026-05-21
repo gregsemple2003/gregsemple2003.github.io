@@ -68,7 +68,7 @@
     <label for="source">Join Token</label>
     <textarea id="source" autocomplete="off" spellcheck="false"></textarea>
     <button id="copy" type="button">Copy Token</button>
-    <p id="status" role="status" aria-live="polite">Click the button to copy the join token.</p>
+    <p id="status" role="status" aria-live="polite">Click the button to copy the join token.<br>Then press F7 in-game and click "Join".</p>
   </main>
 
   <script>
@@ -88,7 +88,7 @@
 
       try {
         await navigator.clipboard.writeText(copyValue);
-        status.textContent = "Copied token.";
+        status.textContent = 'Copied token. Press F7 in-game and click "Join".';
       } catch (error) {
         source.focus();
         source.select();
